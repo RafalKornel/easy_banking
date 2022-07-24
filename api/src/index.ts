@@ -1,22 +1,12 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import { corsMiddleware } from "./cors";
+import { app } from "./app";
 
-dotenv.config();
+import { registerLoginRoutes } from "./login/login.controller";
 
-const app: Express = express();
 const port = process.env.PORT || 8000;
 
-// Add headers before the routes are defined
-app.use(corsMiddleware);
+console.log(typeof registerLoginRoutes);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
-
-app.get("/test", (req: Request, res: Response) => {
-  res.send("hello test content from BE");
-});
+registerLoginRoutes(app);
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
