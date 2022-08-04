@@ -8,15 +8,19 @@ export interface RegisterDto {
 
 export class RegisterModel {
   readonly username: string;
-  readonly password: Password;
-  readonly repeatPassword: Password;
+  private readonly _password: Password;
+  private readonly repeatPassword: Password;
 
   constructor(data: RegisterDto) {
     this.username = data.username;
-    this.password = new Password(data.password);
+    this._password = new Password(data.password);
     this.repeatPassword = new Password(data.repeatPassword);
 
     this.validate();
+  }
+
+  get password() {
+    return this._password.value;
   }
 
   validateRepeat(password: Password, repeatPassword: Password) {
@@ -26,7 +30,7 @@ export class RegisterModel {
   }
 
   validate() {
-    this.validateRepeat(this.password, this.repeatPassword);
+    this.validateRepeat(this._password, this.repeatPassword);
   }
 }
 
