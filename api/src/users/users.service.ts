@@ -18,7 +18,25 @@ class UsersService {
       repeatPassword,
     });
 
-    return await this.db.query("SELECT * FROM users", []);
+    const existingUsers = await this.getUsers();
+
+    const isUserRegistered = existingUsers.rows.find(
+      (user) => user.username === registerModel.username
+    );
+
+    if (isUserRegistered) {
+      throw new Error("User already registered");
+    }
+
+    const userIds = existingUsers.rows.map((user) => user.id);
+    const highestId = Math.max(...userIds);
+    const newUserId = highestId + 1;
+
+    return await this.db.query("INSERT INTO users VALUES ($1, $2, $3)", [
+      newUserId,
+      registerModel.username,
+      registerModel.password,
+    ]);
   }
 
   async getUsers() {
