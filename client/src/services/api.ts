@@ -1,5 +1,13 @@
 import axios from "axios";
 
+interface BaseResponse {
+  status: number;
+}
+
+type ResponseWithData<T> = BaseResponse & {
+  data: T;
+};
+
 class Api {
   private apiPath: string;
 
@@ -14,7 +22,7 @@ class Api {
   }
 
   get<TResponse = {}>(endpoint: string) {
-    return axios.get<TResponse>(this.getApiPath(endpoint));
+    return axios.get<ResponseWithData<TResponse>>(this.getApiPath(endpoint));
   }
 
   post<TData = {}, TResponse = {}>(endpoint: string, data: TData) {
