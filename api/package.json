@@ -12,9 +12,11 @@
   "author": "RafalKornel",
   "license": "ISC",
   "dependencies": {
+    "@types/pg": "^8.6.5",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "pg": "^8.7.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

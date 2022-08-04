@@ -6,6 +6,7 @@ To create databse follow [this gist](https://gist.github.com/phortuin/2fe698b6c7
 HOST=localhost
 PORT=5432
 CONNECTION_USER=dev_easy_banking
+CONNECTION_PASSWORD=
 NAME=EasyBankingDev
 ```
 

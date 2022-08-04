@@ -1,6 +1,6 @@
 import { app } from "./app";
 
-import { registerLoginRoutes } from "./login/login.controller";
+import { registerLoginRoutes } from "./users";
 
 const port = process.env.PORT || 8000;
 
