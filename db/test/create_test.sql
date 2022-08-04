@@ -1,0 +1,1 @@
+CREATE TABLE test ( id INT PRIMARY KEY, record VARCHAR);
