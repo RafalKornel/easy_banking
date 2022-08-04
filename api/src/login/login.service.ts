@@ -1,9 +1,17 @@
-import { db, Db } from "../services";
-import { LoginDto, LoginModel } from "./login.model";
+import { Db } from "../services";
+import { RegisterDto, RegisterModel } from "./login.model";
 
 class LoginService extends Db {
-  async createUser(user: LoginModel) {
-    this.db(user);
+  async registerUser(user: RegisterDto) {
+    const { password, repeatPassword, username } = user;
+
+    const registerModel = new RegisterModel({
+      username,
+      password,
+      repeatPassword,
+    });
+
+    return await this.db(registerModel);
   }
 }
 

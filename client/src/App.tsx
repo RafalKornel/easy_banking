@@ -1,13 +1,13 @@
 import { FormEvent, useState } from "react";
 import { API } from "./services/api";
 
-interface LoginRequest {
+interface RegisterRequest {
   username: string;
   password: string;
   repeatPassword: string;
 }
 
-const sendCredentials = async (
+const registerUser = async (
   username: string,
   password: string,
   repeatPassword: string
@@ -18,12 +18,12 @@ const sendCredentials = async (
     repeatPassword,
   };
 
-  const response = await API.post<LoginRequest>("login", body);
+  const response = await API.post<RegisterRequest>("register", body);
 
   return response;
 };
 
-const SubmitCredentials = () => {
+const RegisterUserForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -33,7 +33,7 @@ const SubmitCredentials = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    sendCredentials(username, password, repeatPassword).then((response) =>
+    registerUser(username, password, repeatPassword).then((response) =>
       setStatus(response.status)
     );
   };
@@ -70,7 +70,7 @@ const SubmitCredentials = () => {
 function App() {
   return (
     <div>
-      <SubmitCredentials />
+      <RegisterUserForm />
       <h1>hello world 123</h1>
     </div>
   );
