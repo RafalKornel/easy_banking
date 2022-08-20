@@ -1,27 +1,5 @@
 import { FormEvent, useState } from "react";
-import { API } from "../services/api";
-
-interface RegisterRequest {
-  username: string;
-  password: string;
-  repeatPassword: string;
-}
-
-const registerUser = async (
-  username: string,
-  password: string,
-  repeatPassword: string
-) => {
-  const body = {
-    username,
-    password,
-    repeatPassword,
-  };
-
-  const response = await API.post<RegisterRequest>("register", body);
-
-  return response;
-};
+import { registerUser } from "../services/users";
 
 export const RegisterUserForm = () => {
   const [username, setUsername] = useState("");
