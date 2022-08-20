@@ -1,5 +1,6 @@
 import { db } from "../db";
 import { Db } from "../services";
+import { getNextId } from "../utils/getNextId";
 import { RegisterDto, RegisterModel, UserModel } from "./users.model";
 
 class UsersService {
@@ -28,9 +29,7 @@ class UsersService {
       throw new Error("User already registered");
     }
 
-    const userIds = existingUsers.rows.map((user) => user.id);
-    const highestId = Math.max(...userIds);
-    const newUserId = highestId + 1;
+    const newUserId = getNextId(existingUsers);
 
     return await this.db.query("INSERT INTO users VALUES ($1, $2, $3)", [
       newUserId,
@@ -44,4 +43,4 @@ class UsersService {
   }
 }
 
-export const loginService = new UsersService(db);
+export const usersService = new UsersService(db);

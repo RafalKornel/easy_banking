@@ -13,7 +13,7 @@ const ErrorHandler = ({ error }: Props) => (
 );
 
 export const UsersList = () => {
-  const { error, isLoading, users, refetch } = useUsers();
+  const { error, isLoading, resource, refetch } = useUsers();
 
   if (isLoading) return <Loader />;
 
@@ -23,7 +23,7 @@ export const UsersList = () => {
     <div>
       <h2>Users:</h2>
       <ul>
-        {users?.map((user) => (
+        {resource?.users.map((user) => (
           <li key={user.id}>{user.username}</li>
         ))}
       </ul>

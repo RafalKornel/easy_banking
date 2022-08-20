@@ -4,7 +4,7 @@ interface BaseResponse {
   status: number;
 }
 
-type ResponseWithData<T> = BaseResponse & {
+export type ResponseWithData<T> = BaseResponse & {
   data: T;
 };
 
