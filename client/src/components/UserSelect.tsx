@@ -8,7 +8,10 @@ type Props = {
   onChange?: (userId: Pick<UserModel, "id">) => void;
 };
 
-export const UserSelect = ({ placeholder, onChange }: Props) => {
+export const UserSelect = ({
+  placeholder = "Select user",
+  onChange,
+}: Props) => {
   const { resource, isLoading, error } = useUsers();
 
   if (isLoading) return <Loader />;
@@ -18,7 +21,11 @@ export const UserSelect = ({ placeholder, onChange }: Props) => {
   if (resource === null) return null;
 
   return (
-    <Select placeholder={placeholder} onChange={onChange}>
+    <Select
+      placeholder={placeholder}
+      onChange={onChange}
+      style={{ minWidth: "10rem" }}
+    >
       {resource.users.map((user) => (
         <Select.Option key={user.id} value={user.id}>
           {user.username}

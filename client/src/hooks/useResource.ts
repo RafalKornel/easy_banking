@@ -2,9 +2,16 @@ import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { ResponseWithData } from "../services/api";
 
+export type UseResourceReturn<T> = {
+  resource: T | null;
+  isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
+};
+
 export const useResource = <T>(
   getResource: () => Promise<AxiosResponse<ResponseWithData<T>>>
-) => {
+): UseResourceReturn<T> => {
   const [resource, setResource] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
