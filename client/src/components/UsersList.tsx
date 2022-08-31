@@ -1,6 +1,7 @@
 import { useUsers } from "../hooks/useUsers";
 import { useHandleResourceState } from "../hooks/useHandleResourceState";
-import { Button, List, Space, Typography } from "antd";
+import { Button, List, Typography } from "antd";
+import { Flex } from "./Flex";
 
 export const UsersList = () => {
   const { error, isLoading, refetch, resource } = useUsers();
@@ -8,11 +9,20 @@ export const UsersList = () => {
   useHandleResourceState({ error, isLoading });
 
   return (
-    <Space direction="vertical">
+    <Flex
+      additionalStyling={{
+        width: "auto",
+        minWidth: "20rem",
+      }}
+    >
       <Typography.Title level={3}>Users:</Typography.Title>
       <List
         itemLayout="horizontal"
         dataSource={resource?.users || []}
+        style={{
+          maxHeight: "20rem",
+          overflowY: "scroll",
+        }}
         renderItem={(item, index) => (
           <List.Item>
             <List.Item.Meta
@@ -22,7 +32,9 @@ export const UsersList = () => {
           </List.Item>
         )}
       />
-      <Button onClick={refetch}>Refetch</Button>
-    </Space>
+      <Button type="primary" onClick={refetch}>
+        Refetch
+      </Button>
+    </Flex>
   );
 };
