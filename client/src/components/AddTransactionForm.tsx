@@ -2,11 +2,7 @@ import { Button, Form, Input, InputNumber } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { UserSelect } from "./UserSelect";
 import { addTransaction, AddTransactionDto } from "../services/transactions";
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
+import { formLayout } from "../styles";
 
 enum Fields {
   senderId = "sender_id",
@@ -20,17 +16,11 @@ export const AddTransactionForm = () => {
   const [form] = useForm<AddTransactionDto>();
 
   const onSubmit = (values: AddTransactionDto) => {
-    console.log(values);
     addTransaction(values);
   };
 
   return (
-    <Form
-      {...layout}
-      form={form}
-      onFinish={onSubmit}
-      style={{ margin: "2rem 0", maxWidth: "30rem" }}
-    >
+    <Form {...formLayout} form={form} onFinish={onSubmit}>
       <Form.Item
         label="Sender"
         name={Fields.senderId}
