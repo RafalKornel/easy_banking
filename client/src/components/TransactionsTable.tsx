@@ -20,10 +20,18 @@ const columns: ColumnsType<TransactionDto> = [
   { title: "Date", dataIndex: "transaction_date" },
 ];
 
-export const TransactionsTable = () => {
+interface Props {
+  filterFunction?: (transaction: TransactionDto) => boolean;
+}
+
+export const TransactionsTable = ({ filterFunction }: Props) => {
   const { resource, isLoading, refetch } = useResource(getTransactions);
 
-  const data = resource?.transactions || [];
+  const transactions = resource?.transactions || [];
+
+  const data = filterFunction
+    ? transactions.filter(filterFunction)
+    : transactions;
 
   return (
     <Table
@@ -31,7 +39,6 @@ export const TransactionsTable = () => {
       loading={isLoading}
       dataSource={data}
       footer={() => <Button onClick={refetch}>Refetch</Button>}
-      style={{ margin: "2rem 0" }}
     />
   );
 };

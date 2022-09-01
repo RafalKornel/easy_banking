@@ -1,10 +1,10 @@
 import { db } from "../db";
 import { Db } from "../services";
 import { usersService } from "../users";
+import { UserModel } from "../users/users.model";
 import { getNextId } from "../utils/getNextId";
 import {
   AddTransactionDto,
-  TransactionDto,
   TransactionModel,
   TransactionWithUsersModel,
 } from "./transactions.model";
@@ -47,9 +47,29 @@ class TransactionsService {
     );
   }
 
+  canPerformTransaction(user: UserModel, ammount: number) {
+    return user.balance >= ammount;
+  }
+
   async addTransaction(transaction: AddTransactionDto) {
     const { ammount, recipient_id, sender_id, title, description } =
       transaction;
+
+    const users = await usersService.getUsers();
+
+    const sender = users.rows.find(({ id }) => id === sender_id);
+    const recipient = users.rows.find(({ id }) => id === recipient_id);
+
+    if (!sender || !recipient) {
+      throw new Error("Couldn't find user");
+    }
+
+    if (!this.canPerformTransaction(sender, ammount)) {
+      throw new Error("User doesn't have sufficient ammount");
+    }
+
+    await usersService.updateBalance(sender_id, sender.balance - ammount);
+    await usersService.updateBalance(recipient_id, recipient.balance + ammount);
 
     const transactions = await this.getAllTransactions();
 

@@ -5,7 +5,7 @@ import { Flex } from "./Flex";
 
 enum Fields {
   username = "username",
-  passord = "password",
+  password = "password",
   repeatPassword = "repeatPassword",
 }
 
@@ -34,14 +34,14 @@ export const RegisterUserForm = () => {
         </Form.Item>
         <Form.Item
           label="Password"
-          name={Fields.username}
+          name={Fields.password}
           rules={[{ required: true }]}
         >
           <Input type="password" placeholder="Password" />
         </Form.Item>
         <Form.Item
           label="Repeat password"
-          name={Fields.username}
+          name={Fields.repeatPassword}
           rules={[{ required: true }]}
         >
           <Input type="password" placeholder="Repeat password" />

@@ -3,6 +3,8 @@ import { Db } from "../services";
 import { getNextId } from "../utils/getNextId";
 import { RegisterDto, RegisterModel, UserModel } from "./users.model";
 
+const DEFAULT_BALANCE = 1000;
+
 class UsersService {
   private readonly db: Db;
 
@@ -31,15 +33,23 @@ class UsersService {
 
     const newUserId = getNextId(existingUsers);
 
-    return await this.db.query("INSERT INTO users VALUES ($1, $2, $3)", [
+    return await this.db.query("INSERT INTO users VALUES ($1, $2, $3, $4)", [
       newUserId,
       registerModel.username,
       registerModel.password,
+      DEFAULT_BALANCE,
     ]);
   }
 
   async getUsers() {
     return await this.db.query<UserModel, any>("SELECT * FROM users", []);
+  }
+
+  async updateBalance(userId: number, newBalance: number) {
+    await this.db.query<UserModel, any>(
+      "UPDATE users SET balance = $1 WHERE id = $2;",
+      [newBalance, userId]
+    );
   }
 }
 

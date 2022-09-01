@@ -26,6 +26,7 @@ export const UsersList = () => {
           <List.Item>
             <List.Item.Meta
               title={item.username}
+              description={`Balance: ${item.balance}$`}
               avatar={<span>{index + 1}.</span>}
             />
           </List.Item>
