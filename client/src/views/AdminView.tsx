@@ -1,7 +1,10 @@
-import { RegisterUserForm, UsersList } from "../components";
-import { AddTransactionForm } from "../components/AddTransactionForm";
-import { Flex } from "../components/Flex";
-import { TransactionsTable } from "../components/TransactionsTable";
+import {
+  RegisterUserForm,
+  UsersList,
+  Flex,
+  TransactionsTable,
+  AddTransactionForm,
+} from "../components";
 
 export const AdminView = () => (
   <Flex additionalStyling={{ height: "100%" }}>

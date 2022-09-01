@@ -1,12 +1,11 @@
-import { useUsers } from "../hooks/useUsers";
-import { useHandleResourceState } from "../hooks/useHandleResourceState";
+import { useHandleResourceState, useUsers } from "../hooks";
 import { Button, List, Typography } from "antd";
 import { Flex } from "./Flex";
 
 export const UsersList = () => {
   const { error, isLoading, refetch, resource } = useUsers();
 
-  useHandleResourceState({ error, isLoading });
+  useHandleResourceState({ error, isLoading, resource });
 
   return (
     <Flex

@@ -1,6 +1,7 @@
 import { Button, Table } from "antd";
 import { ColumnsType } from "antd/lib/table";
-import { useResource } from "../hooks/useResource";
+
+import { useResource } from "../hooks";
 import { API } from "../services/api";
 import { TransactionDto } from "../services/transactions";
 

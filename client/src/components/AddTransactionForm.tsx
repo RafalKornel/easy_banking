@@ -1,8 +1,9 @@
 import { Button, Form, Input, InputNumber, Typography } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { UserSelect } from "./UserSelect";
+
 import { addTransaction, AddTransactionDto } from "../services/transactions";
 import { defaultFormStyling } from "../styles";
+import { UserSelect } from "./UserSelect";
 import { Flex } from "./Flex";
 
 enum Fields {

@@ -1,42 +1,32 @@
 import { Select } from "antd";
-import { useState } from "react";
-import { useUsers } from "../hooks/useUsers";
+import { useHandleResourceState, useUsers } from "../hooks";
 import { UserModel } from "../models/User.model";
-import { Loader } from "./Loader";
 
-type SelectState = Pick<UserModel, "id"> | undefined;
+type SelectState = UserModel["id"] | undefined;
 
 type Props = {
   placeholder?: string;
+  value?: SelectState;
   onChange?: (userId: SelectState) => void;
 };
 
 export const UserSelect = ({
   placeholder = "Select user",
+  value,
   onChange,
 }: Props) => {
-  const [user, setUser] = useState<SelectState>();
   const { resource, isLoading, error } = useUsers();
 
-  const handleChange = (value: SelectState) => {
-    setUser(value);
-    onChange && onChange(value);
-  };
-
-  if (isLoading) return <Loader />;
-
-  if (error) return <div>error...</div>;
-
-  if (resource === null) return null;
+  useHandleResourceState({ error, isLoading, resource });
 
   return (
     <Select
       placeholder={placeholder}
-      onChange={handleChange}
-      value={user}
+      onChange={onChange}
+      value={value}
       style={{ minWidth: "10rem" }}
     >
-      {resource.users.map((user) => (
+      {resource?.users.map((user) => (
         <Select.Option key={user.id} value={user.id}>
           {user.username}
         </Select.Option>
