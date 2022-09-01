@@ -6,6 +6,10 @@ import { defaultFormStyling } from "../styles";
 import { UserSelect } from "./UserSelect";
 import { Flex } from "./Flex";
 import { useMutationWithToast } from "../hooks";
+import { UserModel } from "../models/User.model";
+
+const userLabelParserWithBalance = (user: UserModel) =>
+  `${user.username} (${user.balance}$)`;
 
 enum Fields {
   senderId = "sender_id",
@@ -49,6 +53,7 @@ export const AddTransactionForm = () => {
           rules={[{ required: true }]}
         >
           <UserSelect
+            labelParser={userLabelParserWithBalance}
             placeholder="Select sender"
             onChange={(userId) => form.setFieldValue(Fields.senderId, userId)}
           />
@@ -60,6 +65,7 @@ export const AddTransactionForm = () => {
           rules={[{ required: true }]}
         >
           <UserSelect
+            labelParser={userLabelParserWithBalance}
             placeholder="Select recipient"
             onChange={(userId) =>
               form.setFieldValue(Fields.recipeintId, userId)

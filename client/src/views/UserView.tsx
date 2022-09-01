@@ -19,10 +19,16 @@ export const UserView = () => {
 
   return (
     <Flex>
-      <Typography.Title level={2}>
-        Welcome {currentUser?.username}
-      </Typography.Title>
-      <Statistic title="Your balance" value={currentUser?.balance} prefix="$" />
+      <Flex direction="row" align="center" justify="space-between">
+        <Typography.Title level={2}>
+          Welcome {currentUser?.username}
+        </Typography.Title>
+        <Statistic
+          title="Your balance"
+          value={currentUser?.balance}
+          prefix="$"
+        />
+      </Flex>
 
       <Flex additionalStyling={{ margin: "2rem 0" }}>
         <Typography.Title level={4}>Incoming transactions</Typography.Title>
