@@ -2,6 +2,7 @@ import { Button, Form, Input, Typography } from "antd";
 import { registerUser, RegisterUserDto } from "../services/users";
 import { defaultFormStyling } from "../styles";
 import { Flex } from "./Flex";
+import { useMutationWithToast } from "../hooks";
 
 enum Fields {
   username = "username",
@@ -10,9 +11,12 @@ enum Fields {
 }
 
 export const RegisterUserForm = () => {
-  const handleSubmit = (userData: RegisterUserDto) => {
-    registerUser(userData);
-  };
+  const handleSubmit = (userData: RegisterUserDto) => registerUser(userData);
+
+  const handleSubmitWithToast = useMutationWithToast(handleSubmit, {
+    loading: "Registering user...",
+    success: "Successfully registered user!",
+  });
 
   return (
     <Flex>
@@ -20,7 +24,7 @@ export const RegisterUserForm = () => {
         Register new user
       </Typography.Title>
       <Form
-        onFinish={handleSubmit}
+        onFinish={handleSubmitWithToast}
         style={{ ...defaultFormStyling, minWidth: "30rem" }}
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 14 }}

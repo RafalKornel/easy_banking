@@ -5,6 +5,7 @@ import { addTransaction, AddTransactionDto } from "../services/transactions";
 import { defaultFormStyling } from "../styles";
 import { UserSelect } from "./UserSelect";
 import { Flex } from "./Flex";
+import { useMutationWithToast } from "../hooks";
 
 enum Fields {
   senderId = "sender_id",
@@ -17,9 +18,12 @@ enum Fields {
 export const AddTransactionForm = () => {
   const [form] = useForm<AddTransactionDto>();
 
-  const onSubmit = (values: AddTransactionDto) => {
-    addTransaction(values);
-  };
+  const handleSubmit = (values: AddTransactionDto) => addTransaction(values);
+
+  const handleSubmitWithMutation = useMutationWithToast(handleSubmit, {
+    loading: "Creating new transaction...",
+    success: "Successfully created transaction!",
+  });
 
   return (
     <Flex
@@ -37,7 +41,7 @@ export const AddTransactionForm = () => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         form={form}
-        onFinish={onSubmit}
+        onFinish={handleSubmitWithMutation}
       >
         <Form.Item
           label="Sender"
