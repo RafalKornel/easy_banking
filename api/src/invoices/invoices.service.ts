@@ -107,7 +107,7 @@ class InvoicesService extends EntityService {
       ]
     );
 
-    await usersService.updateBalance(user_id, user.balance - ammount);
+    await usersService.updateBalance(user_id, user.balance + ammount);
 
     return queryResult;
   }
