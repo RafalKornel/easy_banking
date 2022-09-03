@@ -16,6 +16,7 @@ export interface InvoiceDto {
   recipient: string;
   invoice_description?: string;
   invoice_date: string;
+  user_id: number;
   username: UserModel["username"];
 }
 

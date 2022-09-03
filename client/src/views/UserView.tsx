@@ -1,6 +1,7 @@
 import { Statistic, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { ErrorHandler, Flex, TransfersTable } from "../components";
+import { InvoicesTable } from "../components/InvoicesTable";
 import { useHandleResourceState, useUsers } from "../hooks";
 
 export const UserView = () => {
@@ -30,9 +31,14 @@ export const UserView = () => {
         />
       </Flex>
 
+      <InvoicesTable
+        title="Your invoices"
+        filterFunction={(invoice) => invoice.user_id === currentUser.id}
+      />
+
       <Flex additionalStyling={{ margin: "2rem 0" }}>
-        <Typography.Title level={4}>Incoming transfers</Typography.Title>
         <TransfersTable
+          title="Incoming transfers"
           filterFunction={(transfer) =>
             transfer.recipient_id === currentUser.id
           }
@@ -40,8 +46,8 @@ export const UserView = () => {
       </Flex>
 
       <Flex>
-        <Typography.Title level={4}>Outcoming transfers</Typography.Title>
         <TransfersTable
+          title="Outcoming transfers"
           filterFunction={(transfer) => transfer.sender_id === currentUser.id}
         />
       </Flex>

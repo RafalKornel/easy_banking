@@ -28,10 +28,14 @@ const columns: ColumnsType<InvoiceDto> = [
 ];
 
 interface Props {
+  title?: string;
   filterFunction?: (invoice: InvoiceDto) => boolean;
 }
 
-export const InvoicesTable = ({ filterFunction }: Props) => {
+export const InvoicesTable = ({
+  title = "Invoices",
+  filterFunction,
+}: Props) => {
   const { isLoading, refetch, resource } = useResource(getAllInvoices);
 
   const invoices = resource?.invoices || [];
@@ -40,7 +44,7 @@ export const InvoicesTable = ({ filterFunction }: Props) => {
 
   return (
     <Flex>
-      <Typography.Title level={3}>Invoices</Typography.Title>
+      <Typography.Title level={3}>{title}</Typography.Title>
       <Table
         columns={columns}
         dataSource={data}

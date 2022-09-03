@@ -19,10 +19,14 @@ const columns: ColumnsType<TransferDto> = [
 ];
 
 interface Props {
+  title?: string;
   filterFunction?: (transfer: TransferDto) => boolean;
 }
 
-export const TransfersTable = ({ filterFunction }: Props) => {
+export const TransfersTable = ({
+  title = "Transfers",
+  filterFunction,
+}: Props) => {
   const { resource, isLoading, refetch } = useResource(getAllTransfers);
 
   const transfers = resource?.transfers || [];
@@ -31,7 +35,7 @@ export const TransfersTable = ({ filterFunction }: Props) => {
 
   return (
     <Flex>
-      <Typography.Title level={3}>Transfers</Typography.Title>
+      <Typography.Title level={3}>{title}</Typography.Title>
       <Table
         columns={columns}
         loading={isLoading}
