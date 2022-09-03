@@ -14,7 +14,7 @@ export const useMutationWithToast = <TArgs, TReturn>(
   const { loading = "Loading...", success = "Success!" } = options || {};
 
   const mutationWithToast = (args: TArgs) => {
-    message.loading({ content: loading, key });
+    message.loading({ content: loading, key, duration: 0 });
 
     mutation(args)
       .then((result) => {

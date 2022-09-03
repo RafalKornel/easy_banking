@@ -88,15 +88,13 @@ class InvoicesService extends EntityService {
       throw new Error("User doesn't have sufficient ammount for invoice");
     }
 
-    await usersService.updateBalance(user_id, user.balance - ammount);
-
     const invoices = await this.getAllInvoices();
 
     const nextId = hardId || getNextId(invoices);
 
     const invoiceDate = date || new Date().toISOString();
 
-    return await this.db.query(
+    const queryResult = await this.db.query(
       "INSERT INTO invoices VALUES ($1, $2, $3, $4, $5, $6, $7)",
       [
         nextId,
@@ -108,6 +106,10 @@ class InvoicesService extends EntityService {
         user_id,
       ]
     );
+
+    await usersService.updateBalance(user_id, user.balance - ammount);
+
+    return queryResult;
   }
 }
 

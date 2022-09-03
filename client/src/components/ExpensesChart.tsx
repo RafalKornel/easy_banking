@@ -94,7 +94,9 @@ export const ExpensesChart = ({ invoices }: Props) => {
   );
 
   return (
-    <Flex>
+    <Flex additionalStyling={{ maxWidth: "50rem", width: "100%" }}>
+      <Typography.Title level={3}>History analysis</Typography.Title>
+
       <Flex additionalStyling={{ margin: "1rem 0" }} direction="row">
         <Flex>
           <Typography.Text>Select year</Typography.Text>

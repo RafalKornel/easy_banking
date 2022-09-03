@@ -7,12 +7,6 @@ import { faker } from "@faker-js/faker";
 import { AddTransferDto } from "../transfers/transfers.model";
 
 export class SeederService {
-  private entityServices: EntityService[];
-
-  constructor() {
-    this.entityServices = [usersService, invoicesService, transfersService];
-  }
-
   async dropAllTables() {
     await transfersService.drop();
     await invoicesService.drop();
@@ -71,7 +65,7 @@ export class SeederService {
       title: faker.commerce.productName(),
       invoice_description: faker.finance.transactionDescription(),
       user_id: userId,
-      date: faker.date.past().toISOString(),
+      date: faker.date.past(4).toISOString(),
     };
   }
 
@@ -88,7 +82,7 @@ export class SeederService {
     };
   }
 
-  async seedUsers(count = 20) {
+  async seedUsers(count = 7) {
     const generateUserPromises = Array(count)
       .fill(0)
       .map((_, i) => {
@@ -99,7 +93,7 @@ export class SeederService {
     await Promise.all(generateUserPromises);
   }
 
-  async seedInvoices(avgPerUser = 100, deviation = 20) {
+  async seedInvoices(avgPerUser = 2000, deviation = 500) {
     const users = await usersService.getUsers();
 
     const invoicesPromises = users.rows.map((user) => {
@@ -109,7 +103,9 @@ export class SeederService {
         .map((_, i) => this.generateInvoice(user.id));
 
       const createInvoicePromises = invoices.map((invoice, i) =>
-        invoicesService.addInvoice(invoice, user.id * 1000 + i + 1)
+        invoicesService
+          .addInvoice(invoice, user.id * 10000 + i + 1)
+          .catch((e) => {})
       );
 
       return createInvoicePromises;
@@ -118,7 +114,7 @@ export class SeederService {
     await Promise.all(invoicesPromises.flat());
   }
 
-  async seedTransfers(avgPerUser = 30, deviation = 5) {
+  async seedTransfers(avgPerUser = 50, deviation = 5) {
     const users = await usersService.getUsers();
 
     const transfersPromises = users.rows.map((user) => {

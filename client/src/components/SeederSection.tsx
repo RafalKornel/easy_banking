@@ -9,7 +9,7 @@ export const SeederSection = () => {
   const triggerSeedWithToast = useMutationWithToast(triggerSeed);
 
   return (
-    <Flex additionalStyling={{ margin: "4rem 0" }}>
+    <Flex additionalStyling={{ margin: "4rem 0", maxWidth: "10rem" }}>
       <Typography.Title level={3}>Seeder</Typography.Title>
 
       <Button onClick={triggerSeedWithToast}>Trigger seed</Button>

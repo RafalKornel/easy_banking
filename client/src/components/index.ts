@@ -10,3 +10,5 @@ export { UserSelect } from "./UserSelect";
 export { SeederSection } from "./SeederSection";
 export { InvoicesTable } from "./InvoicesTable";
 export { AddInvoiceForm } from "./AddInvoiceForm";
+export { MostRecentInvoiceCard } from "./MostRecentInvoiceCard";
+export { ExpensesChart } from "./ExpensesChart";
