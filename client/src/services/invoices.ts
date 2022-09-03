@@ -5,6 +5,7 @@ export interface AddInvoiceDto {
   ammount: number;
   title: string;
   invoice_description?: string;
+  recipient: string;
   user_id: number;
 }
 
@@ -12,6 +13,7 @@ export interface InvoiceDto {
   id: number;
   ammount: number;
   title: string;
+  recipient: string;
   invoice_description?: string;
   invoice_date: string;
   username: UserModel["username"];

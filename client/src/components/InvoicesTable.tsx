@@ -9,6 +9,7 @@ const columns: ColumnsType<InvoiceDto> = [
   { title: "Description", dataIndex: "invoice_description" },
   { title: "Ammount", dataIndex: "ammount" },
   { title: "User", dataIndex: "username" },
+  { title: "Recipient", dataIndex: "recipient" },
   { title: "Date", dataIndex: "invoice_date" },
 ];
 

@@ -23,6 +23,7 @@ class InvoicesService {
       invoice_description, \
       invoice_date, \
       title, \
+      recipient, \
       user1.id as user_id, \
       user1.username as username \
     FROM invoices \
@@ -40,6 +41,7 @@ class InvoicesService {
       invoice_description, \
       invoice_date, \
       title, \
+      recipient, \
       user1.id as user_id, \
       user1.username as username \
     FROM invoices \
@@ -55,7 +57,7 @@ class InvoicesService {
   }
 
   async addInvoice(invoice: AddInvoiceDto) {
-    const { ammount, title, user_id, invoice_description } = invoice;
+    const { ammount, title, user_id, invoice_description, recipient } = invoice;
 
     const dbResult = await usersService.getUser(user_id);
 
@@ -69,7 +71,7 @@ class InvoicesService {
       throw new Error("User doesn't have sufficient ammount for invoice");
     }
 
-    await usersService.updateBalance(user_id, user.balance + ammount);
+    await usersService.updateBalance(user_id, user.balance - ammount);
 
     const invoices = await this.getAllInvoices();
 
@@ -78,8 +80,16 @@ class InvoicesService {
     const invoiceDate = new Date().toISOString();
 
     return await this.db.query(
-      "INSERT INTO invoices VALUES ($1, $2, $3, $4, $5, $6)",
-      [nextId, ammount, title, invoice_description, invoiceDate, user_id]
+      "INSERT INTO invoices VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [
+        nextId,
+        ammount,
+        title,
+        invoice_description,
+        invoiceDate,
+        recipient,
+        user_id,
+      ]
     );
   }
 }

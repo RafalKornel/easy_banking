@@ -11,6 +11,7 @@ enum Fields {
   userId = "user_id",
   ammount = "ammount",
   title = "title",
+  recipient = "recipient",
   description = "description",
 }
 
@@ -52,6 +53,14 @@ export const AddInvoiceForm = () => {
             placeholder="Select sender"
             onChange={(userId) => form.setFieldValue(Fields.userId, userId)}
           />
+        </Form.Item>
+
+        <Form.Item
+          label="Recipient"
+          name={Fields.recipient}
+          rules={[{ required: true }]}
+        >
+          <Input placeholder="Recipient..." />
         </Form.Item>
 
         <Form.Item

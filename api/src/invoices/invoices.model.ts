@@ -6,6 +6,7 @@ export interface InvoiceModel {
   title: string;
   invoice_description?: string;
   invoice_date: string;
+  recipient: string;
   user_id: number;
 }
 
@@ -13,4 +14,5 @@ export interface InvoiceDto extends InvoiceModel {
   username: UserModel["username"];
 }
 
-export interface AddInvoiceDto extends Omit<InvoiceModel, "id"> {}
+export interface AddInvoiceDto
+  extends Omit<InvoiceModel, "id" | "invoice_date"> {}
