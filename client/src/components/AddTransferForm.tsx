@@ -1,7 +1,7 @@
 import { Button, Form, Input, InputNumber, Typography } from "antd";
 import { useForm } from "antd/es/form/Form";
 
-import { addTransaction, AddTransactionDto } from "../services/transactions";
+import { addTransfer, AddTransferDto } from "../services/transfers";
 import { defaultFormStyling } from "../styles";
 import { UserSelect } from "./UserSelect";
 import { Flex } from "./Flex";
@@ -19,14 +19,14 @@ enum Fields {
   description = "description",
 }
 
-export const AddTransactionForm = () => {
-  const [form] = useForm<AddTransactionDto>();
+export const AddTransferForm = () => {
+  const [form] = useForm<AddTransferDto>();
 
-  const handleSubmit = (values: AddTransactionDto) => addTransaction(values);
+  const handleSubmit = (values: AddTransferDto) => addTransfer(values);
 
   const handleSubmitWithMutation = useMutationWithToast(handleSubmit, {
-    loading: "Creating new transaction...",
-    success: "Successfully created transaction!",
+    loading: "Creating new transfer...",
+    success: "Successfully transfered money!",
   });
 
   return (
@@ -38,7 +38,7 @@ export const AddTransactionForm = () => {
       }}
     >
       <Typography.Title level={3} style={{ marginLeft: "33%" }}>
-        Create new transaction
+        Create new transfer
       </Typography.Title>
       <Form
         style={defaultFormStyling}

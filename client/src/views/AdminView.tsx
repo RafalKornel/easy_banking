@@ -2,8 +2,8 @@ import {
   RegisterUserForm,
   UsersList,
   Flex,
-  TransactionsTable,
-  AddTransactionForm,
+  TransfersTable,
+  AddTransferForm,
 } from "../components";
 
 export const AdminView = () => (
@@ -12,7 +12,7 @@ export const AdminView = () => (
       <UsersList />
       <RegisterUserForm />
     </Flex>
-    <AddTransactionForm />
-    <TransactionsTable />
+    <AddTransferForm />
+    <TransfersTable />
   </Flex>
 );

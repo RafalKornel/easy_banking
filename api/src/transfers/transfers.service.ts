@@ -4,21 +4,21 @@ import { usersService } from "../users";
 import { UserModel } from "../users/users.model";
 import { getNextId } from "../utils/getNextId";
 import {
-  AddTransactionDto,
-  TransactionModel,
-  TransactionWithUsersModel,
-} from "./transactions.model";
+  AddTransferDto,
+  TransferModel,
+  TransferWithUsersModel,
+} from "./transfers.model";
 
-class TransactionsService {
+class TransfersService {
   private readonly db: Db;
 
   constructor(db: Db) {
     this.db = db;
   }
 
-  async getAllTransactions() {
-    return await this.db.query<TransactionModel, any>(
-      "SELECT * FROM transactions",
+  async getAllTransfers() {
+    return await this.db.query<TransferModel, any>(
+      "SELECT * FROM transfers",
       []
     );
   }
@@ -28,32 +28,31 @@ class TransactionsService {
   // INNER JOIN table2
   // ON table1.common_filed = table2.common_field;
 
-  async getAllTransactionsWithUsers() {
-    return await this.db.query<TransactionWithUsersModel[], any>(
+  async getAllTransfersWithUsers() {
+    return await this.db.query<TransferWithUsersModel[], any>(
       "SELECT \
-        transactions.id, \
+        transfers.id, \
         ammount, \
         recipient_id, \
         sender_id, \
         title, \
-        transaction_date, \
-        transaction_description, \
+        transfer_date, \
+        transfer_description, \
         user1.username as recipient_username, \
         user2.username as sender_username \
-      FROM transactions \
-        JOIN users as user1 on transactions.recipient_id = user1.id \
-        JOIN users as user2 on transactions.sender_id = user2.id;",
+      FROM transfers \
+        JOIN users as user1 on transfers.recipient_id = user1.id \
+        JOIN users as user2 on transfers.sender_id = user2.id;",
       []
     );
   }
 
-  canPerformTransaction(user: UserModel, ammount: number) {
+  canPerformTransfer(user: UserModel, ammount: number) {
     return user.balance >= ammount;
   }
 
-  async addTransaction(transaction: AddTransactionDto) {
-    const { ammount, recipient_id, sender_id, title, description } =
-      transaction;
+  async addTransfer(transfer: AddTransferDto) {
+    const { ammount, recipient_id, sender_id, title, description } = transfer;
 
     const users = await usersService.getUsers();
 
@@ -64,27 +63,27 @@ class TransactionsService {
       throw new Error("Couldn't find user");
     }
 
-    if (!this.canPerformTransaction(sender, ammount)) {
+    if (!this.canPerformTransfer(sender, ammount)) {
       throw new Error("User doesn't have sufficient ammount");
     }
 
     await usersService.updateBalance(sender_id, sender.balance - ammount);
     await usersService.updateBalance(recipient_id, recipient.balance + ammount);
 
-    const transactions = await this.getAllTransactions();
+    const transfers = await this.getAllTransfers();
 
-    const nextId = getNextId(transactions);
+    const nextId = getNextId(transfers);
 
-    const transactionDate = new Date().toISOString();
+    const transferDate = new Date().toISOString();
 
     await this.db.query(
-      "INSERT INTO transactions VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      "INSERT INTO transfers VALUES ($1, $2, $3, $4, $5, $6, $7)",
       [
         nextId,
         ammount,
         title,
         description,
-        transactionDate,
+        transferDate,
         sender_id,
         recipient_id,
       ]
@@ -92,4 +91,4 @@ class TransactionsService {
   }
 }
 
-export const transactionService = new TransactionsService(db);
+export const transfersService = new TransfersService(db);

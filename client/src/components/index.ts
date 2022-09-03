@@ -1,9 +1,9 @@
 export { RegisterUserForm } from "./RegisterUser";
 export { UsersList } from "./UsersList";
-export { AddTransactionForm } from "./AddTransactionForm";
+export { AddTransferForm } from "./AddTransferForm";
 export { AppHeader } from "./AppHeader";
 export { ErrorHandler } from "./ErrorHandler";
 export { Loader } from "./Loader";
 export { Flex } from "./Flex";
-export { TransactionsTable } from "./TransactionsTable";
+export { TransfersTable } from "./TransfersTable";
 export { UserSelect } from "./UserSelect";
