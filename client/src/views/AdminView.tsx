@@ -1,43 +1,48 @@
-import { Button, Typography } from "antd";
+import { Tabs } from "antd";
 import {
   RegisterUserForm,
   UsersList,
   Flex,
   TransfersTable,
   AddTransferForm,
+  SeederSection,
+  InvoicesTable,
+  AddInvoiceForm,
 } from "../components";
-import { AddInvoiceForm } from "../components/AddInvoiceForm";
-import { InvoicesTable } from "../components/InvoicesTable";
-import { useMutationWithToast } from "../hooks";
-import { API } from "../services/api";
 
-const triggerSeed = () => API.post("seed");
-
-const SeederSection = () => {
-  const triggerSeedWithToast = useMutationWithToast(triggerSeed);
-
-  return (
-    <Flex additionalStyling={{ margin: "4rem 0" }}>
-      <Typography.Title level={3}>Seeder</Typography.Title>
-
-      <Button onClick={triggerSeedWithToast}>Trigger seed</Button>
-    </Flex>
-  );
-};
+enum AdminViewTabs {
+  Seeder = "Seeder",
+  Registration = "Registration",
+  Transfers = "Transfers",
+  Invoices = "Invoices",
+}
 
 export const AdminView = () => (
   <Flex additionalStyling={{ height: "100%" }}>
-    <SeederSection />
+    <Tabs defaultActiveKey={AdminViewTabs.Registration}>
+      <Tabs.TabPane
+        tab={AdminViewTabs.Registration}
+        key={AdminViewTabs.Registration}
+      >
+        <Flex direction="row" gap="2rem" justify="space-evenly">
+          <UsersList />
+          <RegisterUserForm />
+        </Flex>
+      </Tabs.TabPane>
 
-    <Flex direction="row" gap="2rem" justify="space-evenly">
-      <UsersList />
-      <RegisterUserForm />
-    </Flex>
+      <Tabs.TabPane tab={AdminViewTabs.Transfers} key={AdminViewTabs.Transfers}>
+        <AddTransferForm />
+        <TransfersTable />
+      </Tabs.TabPane>
 
-    <AddTransferForm />
-    <TransfersTable />
+      <Tabs.TabPane tab={AdminViewTabs.Invoices} key={AdminViewTabs.Invoices}>
+        <AddInvoiceForm />
+        <InvoicesTable />
+      </Tabs.TabPane>
 
-    <AddInvoiceForm />
-    <InvoicesTable />
+      <Tabs.TabPane tab={AdminViewTabs.Seeder} key={AdminViewTabs.Seeder}>
+        <SeederSection />
+      </Tabs.TabPane>
+    </Tabs>
   </Flex>
 );
