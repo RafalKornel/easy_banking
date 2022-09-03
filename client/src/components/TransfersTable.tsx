@@ -11,7 +11,11 @@ const columns: ColumnsType<TransferDto> = [
   { title: "Ammount", dataIndex: "ammount" },
   { title: "Sender", dataIndex: "sender_username" },
   { title: "Recipient", dataIndex: "recipient_username" },
-  { title: "Date", dataIndex: "transfer_date" },
+  {
+    title: "Date",
+    dataIndex: "transfer_date",
+    render: (date) => new Date(date).toLocaleDateString(),
+  },
 ];
 
 interface Props {

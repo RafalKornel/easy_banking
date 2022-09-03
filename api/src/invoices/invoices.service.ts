@@ -1,14 +1,30 @@
 import { db } from "../db";
-import { Db } from "../services";
+import { EntityService } from "../services";
 import { UserModel, usersService } from "../users";
 import { getNextId } from "../utils/getNextId";
 import { AddInvoiceDto, InvoiceDto, InvoiceModel } from "./invoices.model";
 
-class InvoicesService {
-  private readonly db: Db;
+class InvoicesService extends EntityService {
+  async create() {
+    const CREATE_INVOICES_SQL = `
+    CREATE TABLE invoices (
+      id INT PRIMARY KEY,
+      ammount INT NOT NULL,
+      title VARCHAR NOT NULL,
+      invoice_description VARCHAR,
+      invoice_date VARCHAR NOT NULL,
+      recipient VARCHAR NOT NULL,
+      user_id INT NOT NULL,
+      CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users(id)
+    );`;
 
-  constructor(db: Db) {
-    this.db = db;
+    return await this.db.query(CREATE_INVOICES_SQL, []);
+  }
+
+  async drop() {
+    const DROP_INVOICES_SQL = "DROP TABLE IF EXISTS invoices CASCADE";
+
+    return await this.db.query(DROP_INVOICES_SQL, []);
   }
 
   async getAllInvoices() {
@@ -56,8 +72,9 @@ class InvoicesService {
     return user.balance >= ammount;
   }
 
-  async addInvoice(invoice: AddInvoiceDto) {
-    const { ammount, title, user_id, invoice_description, recipient } = invoice;
+  async addInvoice(invoice: AddInvoiceDto, hardId?: number) {
+    const { ammount, title, user_id, invoice_description, recipient, date } =
+      invoice;
 
     const dbResult = await usersService.getUser(user_id);
 
@@ -75,9 +92,9 @@ class InvoicesService {
 
     const invoices = await this.getAllInvoices();
 
-    const nextId = getNextId(invoices);
+    const nextId = hardId || getNextId(invoices);
 
-    const invoiceDate = new Date().toISOString();
+    const invoiceDate = date || new Date().toISOString();
 
     return await this.db.query(
       "INSERT INTO invoices VALUES ($1, $2, $3, $4, $5, $6, $7)",

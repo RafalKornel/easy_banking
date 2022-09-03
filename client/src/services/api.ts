@@ -25,7 +25,7 @@ class Api {
     return axios.get<ResponseWithData<TResponse>>(this.getApiPath(endpoint));
   }
 
-  post<TData = {}, TResponse = {}>(endpoint: string, data: TData) {
+  post<TData = {}, TResponse = {}>(endpoint: string, data?: TData) {
     return axios.post<TResponse>(this.getApiPath(endpoint), data, {
       headers: {
         Accept: "application/json",

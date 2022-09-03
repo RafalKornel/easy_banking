@@ -4,15 +4,18 @@ export interface RegisterDto {
   username: string;
   password: string;
   repeatPassword: string;
+  startingBalance?: number;
 }
 
 export class RegisterModel {
   readonly username: string;
+  readonly startingBalance?: number;
   private readonly _password: Password;
   private readonly repeatPassword: Password;
 
   constructor(data: RegisterDto) {
     this.username = data.username;
+    this.startingBalance = data.startingBalance;
     this._password = new Password(data.password);
     this.repeatPassword = new Password(data.repeatPassword);
 
@@ -26,6 +29,12 @@ export class RegisterModel {
   validateRepeat(password: Password, repeatPassword: Password) {
     if (!password.equal(repeatPassword)) {
       throw new Error("Passwords are not matching");
+    }
+  }
+
+  validateStartingBalance(balance?: number) {
+    if (balance && balance < 0) {
+      throw new Error("Starting balance must be positive value");
     }
   }
 

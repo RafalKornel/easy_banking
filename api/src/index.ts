@@ -1,5 +1,6 @@
 import { app } from "./app";
 import { registerInvoicesRoutes } from "./invoices";
+import { registerSeederRoutes } from "./seeder";
 
 import { registerTransfersRoutes } from "./transfers";
 import { registerUsersRoutes } from "./users";
@@ -7,6 +8,7 @@ import { registerUsersRoutes } from "./users";
 registerUsersRoutes(app);
 registerTransfersRoutes(app);
 registerInvoicesRoutes(app);
+registerSeederRoutes(app);
 
 const port = process.env.PORT || 8000;
 

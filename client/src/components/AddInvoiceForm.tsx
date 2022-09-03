@@ -18,7 +18,8 @@ enum Fields {
 export const AddInvoiceForm = () => {
   const [form] = useForm<AddInvoiceDto>();
 
-  const handleSubmit = (values: AddInvoiceDto) => addInvoice(values);
+  const handleSubmit = (values: AddInvoiceDto) =>
+    addInvoice({ ...values, ammount: -values.ammount });
 
   const handleSubmitWithMutation = useMutationWithToast(handleSubmit, {
     loading: "Creating new invoice...",

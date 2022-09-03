@@ -1,7 +1,6 @@
 import { db } from "../db";
-import { Db } from "../services";
-import { usersService } from "../users";
-import { UserModel } from "../users/users.model";
+import { EntityService } from "../services";
+import { usersService, UserModel } from "../users";
 import { getNextId } from "../utils/getNextId";
 import {
   AddTransferDto,
@@ -9,40 +8,54 @@ import {
   TransferWithUsersModel,
 } from "./transfers.model";
 
-class TransfersService {
-  private readonly db: Db;
+class TransfersService extends EntityService {
+  async create() {
+    const CREATE_TRANSFERS_SQL = `
+    CREATE TABLE transfers (
+      id INT PRIMARY KEY,
+      ammount INT NOT NULL,
+      title VARCHAR NOT NULL,
+      transfer_description VARCHAR,
+      transfer_date VARCHAR NOT NULL,
+      sender_id INT NOT NULL,
+      CONSTRAINT fk_sender FOREIGN KEY(sender_id) REFERENCES users(id),
+      recipient_id INT NOT NULL,
+      CONSTRAINT fk_recipient FOREIGN KEY(recipient_id) REFERENCES users(id)
+    )`;
 
-  constructor(db: Db) {
-    this.db = db;
+    return await this.db.query(CREATE_TRANSFERS_SQL, []);
+  }
+
+  async drop() {
+    const DROP_TRANSFERS_SQL = "DROP TABLE IF EXISTS transfers CASCADE";
+
+    return await this.db.query(DROP_TRANSFERS_SQL, []);
   }
 
   async getAllTransfers() {
-    return await this.db.query<TransferModel, any>(
-      "SELECT * FROM transfers",
-      []
-    );
+    const GET_ALL_TRANSFERS_SQL = "SELECT * FROM transfers";
+
+    return await this.db.query<TransferModel, any>(GET_ALL_TRANSFERS_SQL, []);
   }
 
-  // SELECT table1.column1, table2.column2...
-  // FROM table1
-  // INNER JOIN table2
-  // ON table1.common_filed = table2.common_field;
-
   async getAllTransfersWithUsers() {
+    const GET_ALL_TRANSFERS_WITH_USERS_SQL = `
+    SELECT 
+      transfers.id,
+      ammount,
+      recipient_id,
+      sender_id,
+      title,
+      transfer_date,
+      transfer_description,
+      user1.username as recipient_username,
+      user2.username as sender_username
+    FROM transfers
+      JOIN users as user1 on transfers.recipient_id = user1.id
+      JOIN users as user2 on transfers.sender_id = user2.id;`;
+
     return await this.db.query<TransferWithUsersModel[], any>(
-      "SELECT \
-        transfers.id, \
-        ammount, \
-        recipient_id, \
-        sender_id, \
-        title, \
-        transfer_date, \
-        transfer_description, \
-        user1.username as recipient_username, \
-        user2.username as sender_username \
-      FROM transfers \
-        JOIN users as user1 on transfers.recipient_id = user1.id \
-        JOIN users as user2 on transfers.sender_id = user2.id;",
+      GET_ALL_TRANSFERS_WITH_USERS_SQL,
       []
     );
   }
@@ -51,8 +64,9 @@ class TransfersService {
     return user.balance >= ammount;
   }
 
-  async addTransfer(transfer: AddTransferDto) {
-    const { ammount, recipient_id, sender_id, title, description } = transfer;
+  async addTransfer(transfer: AddTransferDto, hardId?: number) {
+    const { ammount, recipient_id, sender_id, title, description, date } =
+      transfer;
 
     const users = await usersService.getUsers();
 
@@ -72,9 +86,9 @@ class TransfersService {
 
     const transfers = await this.getAllTransfers();
 
-    const nextId = getNextId(transfers);
+    const nextId = hardId || getNextId(transfers);
 
-    const transferDate = new Date().toISOString();
+    const transferDate = date || new Date().toISOString();
 
     return await this.db.query(
       "INSERT INTO transfers VALUES ($1, $2, $3, $4, $5, $6, $7)",

@@ -3,14 +3,28 @@ import Table, { ColumnsType } from "antd/lib/table";
 import { useResource } from "../hooks";
 import { getAllInvoices, InvoiceDto } from "../services/invoices";
 import { Flex } from "./Flex";
+import { AmmountCell } from "./AmmountCell";
 
 const columns: ColumnsType<InvoiceDto> = [
   { title: "Title", dataIndex: "title" },
   { title: "Description", dataIndex: "invoice_description" },
-  { title: "Ammount", dataIndex: "ammount" },
+  {
+    title: "Ammount",
+    dataIndex: "ammount",
+    render: (ammount) => <AmmountCell ammount={ammount} />,
+  },
   { title: "User", dataIndex: "username" },
   { title: "Recipient", dataIndex: "recipient" },
-  { title: "Date", dataIndex: "invoice_date" },
+  {
+    title: "Date",
+    dataIndex: "invoice_date",
+    render: (date) => new Date(date).toLocaleDateString(),
+    sorter: (a, b) => {
+      const firstDate = new Date(a.invoice_date);
+      const secondDate = new Date(b.invoice_date);
+      return firstDate > secondDate ? 1 : -1;
+    },
+  },
 ];
 
 interface Props {

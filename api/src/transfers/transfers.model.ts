@@ -4,6 +4,7 @@ export interface AddTransferDto {
   description?: string;
   sender_id: number;
   recipient_id: number;
+  date?: string;
 }
 
 export interface TransferWithUsersModel extends TransferModel {

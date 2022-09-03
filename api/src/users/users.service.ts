@@ -1,24 +1,37 @@
 import { db } from "../db";
-import { Db } from "../services";
+import { EntityService } from "../services";
 import { getNextId } from "../utils/getNextId";
 import { RegisterDto, RegisterModel, UserModel } from "./users.model";
 
 const DEFAULT_BALANCE = 1000;
 
-class UsersService {
-  private readonly db: Db;
+class UsersService extends EntityService {
+  async create() {
+    const CREATE_USERS_SQL = `
+    CREATE TABLE users (
+      id INT PRIMARY KEY,
+      username VARCHAR NOT NULL,
+      password VARCHAR NOT NULL,
+      balance INT NOT NULL
+    )`;
 
-  constructor(db: Db) {
-    this.db = db;
+    return await this.db.query(CREATE_USERS_SQL, []);
   }
 
-  async registerUser(user: RegisterDto) {
-    const { password, repeatPassword, username } = user;
+  async drop() {
+    const DROP_USERS_SQL = "DROP TABLE IF EXISTS users CASCADE";
+
+    return await this.db.query(DROP_USERS_SQL, []);
+  }
+
+  async registerUser(user: RegisterDto, hardId?: number) {
+    const { password, repeatPassword, username, startingBalance } = user;
 
     const registerModel = new RegisterModel({
       username,
       password,
       repeatPassword,
+      startingBalance,
     });
 
     const existingUsers = await this.getUsers();
@@ -31,13 +44,13 @@ class UsersService {
       throw new Error("User already registered");
     }
 
-    const newUserId = getNextId(existingUsers);
+    const newUserId = hardId || getNextId(existingUsers);
 
     return await this.db.query("INSERT INTO users VALUES ($1, $2, $3, $4)", [
       newUserId,
       registerModel.username,
       registerModel.password,
-      DEFAULT_BALANCE,
+      registerModel.startingBalance || DEFAULT_BALANCE,
     ]);
   }
 

@@ -8,6 +8,7 @@ export interface InvoiceModel {
   invoice_date: string;
   recipient: string;
   user_id: number;
+  date?: string;
 }
 
 export interface InvoiceDto extends InvoiceModel {
