@@ -95,7 +95,7 @@ export const ExpensesChart = ({ invoices }: Props) => {
 
   return (
     <Flex>
-      <Flex additionalStyling={{ margin: "1rem 0" }}>
+      <Flex additionalStyling={{ margin: "1rem 0" }} direction="row">
         <Flex>
           <Typography.Text>Select year</Typography.Text>
           <DatePicker
@@ -107,7 +107,7 @@ export const ExpensesChart = ({ invoices }: Props) => {
             onChange={(value) => setCurrentDate(value)}
           />
         </Flex>
-        <Flex>
+        <Flex additionalStyling={{ margin: "auto 0 0 2rem" }}>
           <Radio.Group
             value={invoiceMode}
             onChange={(e) => setInvoiceMode(e.target.value as InvoiceMode)}
