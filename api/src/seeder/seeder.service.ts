@@ -65,10 +65,6 @@ export class SeederService {
       ? Number(faker.finance.amount(500, 1200, 0))
       : -1 * Number(faker.finance.amount(10, 200, 0));
 
-    if (isIncome) {
-      console.log(ammount);
-    }
-
     return {
       ammount,
       recipient: faker.company.name(),
