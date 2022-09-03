@@ -1,8 +1,9 @@
-import { Button, Table } from "antd";
+import { Button, Table, Typography } from "antd";
 import { ColumnsType } from "antd/lib/table";
 
 import { useResource } from "../hooks";
 import { getAllTransfers, TransferDto } from "../services/transfers";
+import { Flex } from "./Flex";
 
 const columns: ColumnsType<TransferDto> = [
   { title: "Title", dataIndex: "title" },
@@ -22,16 +23,17 @@ export const TransfersTable = ({ filterFunction }: Props) => {
 
   const transfers = resource?.transfers || [];
 
-  console.log({ transfers, resource });
-
   const data = filterFunction ? transfers.filter(filterFunction) : transfers;
 
   return (
-    <Table
-      columns={columns}
-      loading={isLoading}
-      dataSource={data}
-      footer={() => <Button onClick={refetch}>Refetch</Button>}
-    />
+    <Flex>
+      <Typography.Title level={3}>Transfers</Typography.Title>
+      <Table
+        columns={columns}
+        loading={isLoading}
+        dataSource={data}
+        footer={() => <Button onClick={refetch}>Refetch</Button>}
+      />
+    </Flex>
   );
 };

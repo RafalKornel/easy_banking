@@ -1,4 +1,4 @@
-import { Pool, QueryResult } from "pg";
+import { Pool } from "pg";
 
 const credentials = {
   host: process.env.DB_HOST || "",
@@ -13,6 +13,7 @@ export class Db {
   db: any;
 
   constructor() {
+    console.log(credentials);
     this.pool = new Pool(credentials);
   }
 

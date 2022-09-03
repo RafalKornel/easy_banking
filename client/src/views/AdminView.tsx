@@ -5,6 +5,8 @@ import {
   TransfersTable,
   AddTransferForm,
 } from "../components";
+import { AddInvoiceForm } from "../components/AddInvoiceForm";
+import { InvoicesTable } from "../components/InvoicesTable";
 
 export const AdminView = () => (
   <Flex additionalStyling={{ height: "100%" }}>
@@ -12,7 +14,11 @@ export const AdminView = () => (
       <UsersList />
       <RegisterUserForm />
     </Flex>
+
     <AddTransferForm />
     <TransfersTable />
+
+    <AddInvoiceForm />
+    <InvoicesTable />
   </Flex>
 );

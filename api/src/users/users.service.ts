@@ -45,6 +45,15 @@ class UsersService {
     return await this.db.query<UserModel, any>("SELECT * FROM users", []);
   }
 
+  async getUser(userId: number) {
+    return await this.db.query<UserModel, any>(
+      "SELECT * \
+        FROM users \
+        WHERE users.id = $1 ",
+      [userId]
+    );
+  }
+
   async updateBalance(userId: number, newBalance: number) {
     await this.db.query<UserModel, any>(
       "UPDATE users SET balance = $1 WHERE id = $2;",

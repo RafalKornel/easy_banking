@@ -1,2 +1,3 @@
-export { registerUsersRoutes as registerLoginRoutes } from "./users.controller";
+export { registerUsersRoutes } from "./users.controller";
 export { usersService } from "./users.service";
+export { LoginDto, RegisterDto, RegisterModel, UserModel } from "./users.model";

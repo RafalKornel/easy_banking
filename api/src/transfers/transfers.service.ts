@@ -64,7 +64,7 @@ class TransfersService {
     }
 
     if (!this.canPerformTransfer(sender, ammount)) {
-      throw new Error("User doesn't have sufficient ammount");
+      throw new Error("User doesn't have sufficient ammount for transfer");
     }
 
     await usersService.updateBalance(sender_id, sender.balance - ammount);
@@ -76,7 +76,7 @@ class TransfersService {
 
     const transferDate = new Date().toISOString();
 
-    await this.db.query(
+    return await this.db.query(
       "INSERT INTO transfers VALUES ($1, $2, $3, $4, $5, $6, $7)",
       [
         nextId,

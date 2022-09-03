@@ -1,29 +1,27 @@
 import { Button, Form, Input, InputNumber, Typography } from "antd";
-import { useForm } from "antd/es/form/Form";
-
-import { addTransfer, AddTransferDto } from "../services/transfers";
-import { defaultFormStyling } from "../styles";
-import { UserSelect } from "./UserSelect";
-import { Flex } from "./Flex";
+import { useForm } from "antd/lib/form/Form";
 import { useMutationWithToast } from "../hooks";
+import { addInvoice, AddInvoiceDto } from "../services/invoices";
+import { defaultFormStyling } from "../styles";
 import { userLabelParserWithBalance } from "../utils/labelParsers";
+import { Flex } from "./Flex";
+import { UserSelect } from "./UserSelect";
 
 enum Fields {
-  senderId = "sender_id",
-  recipeintId = "recipient_id",
+  userId = "user_id",
   ammount = "ammount",
   title = "title",
   description = "description",
 }
 
-export const AddTransferForm = () => {
-  const [form] = useForm<AddTransferDto>();
+export const AddInvoiceForm = () => {
+  const [form] = useForm<AddInvoiceDto>();
 
-  const handleSubmit = (values: AddTransferDto) => addTransfer(values);
+  const handleSubmit = (values: AddInvoiceDto) => addInvoice(values);
 
   const handleSubmitWithMutation = useMutationWithToast(handleSubmit, {
-    loading: "Creating new transfer...",
-    success: "Successfully transfered money!",
+    loading: "Creating new invoice...",
+    success: "Successfully created invoice!",
   });
 
   return (
@@ -35,7 +33,7 @@ export const AddTransferForm = () => {
       }}
     >
       <Typography.Title level={3} style={{ marginLeft: "33%" }}>
-        Create new transfer
+        Create new invoice
       </Typography.Title>
       <Form
         style={defaultFormStyling}
@@ -46,27 +44,13 @@ export const AddTransferForm = () => {
       >
         <Form.Item
           label="Sender"
-          name={Fields.senderId}
+          name={Fields.userId}
           rules={[{ required: true }]}
         >
           <UserSelect
             labelParser={userLabelParserWithBalance}
             placeholder="Select sender"
-            onChange={(userId) => form.setFieldValue(Fields.senderId, userId)}
-          />
-        </Form.Item>
-
-        <Form.Item
-          label="Recipient"
-          name={Fields.recipeintId}
-          rules={[{ required: true }]}
-        >
-          <UserSelect
-            labelParser={userLabelParserWithBalance}
-            placeholder="Select recipient"
-            onChange={(userId) =>
-              form.setFieldValue(Fields.recipeintId, userId)
-            }
+            onChange={(userId) => form.setFieldValue(Fields.userId, userId)}
           />
         </Form.Item>
 
