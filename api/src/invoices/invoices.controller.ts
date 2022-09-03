@@ -8,7 +8,7 @@ export const registerInvoicesRoutes = (app: Application) => {
     "/invoices",
     async (req: Request, res: Response<{ invoices: InvoiceModel[] }>) => {
       try {
-        const invoices = await invoicesService.getAllInvoices();
+        const invoices = await invoicesService.getAllInvoicesWithUsers();
 
         ResponseHandler.handleSuccess(res, { invoices: invoices.rows });
       } catch (e) {

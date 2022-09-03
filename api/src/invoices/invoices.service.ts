@@ -15,19 +15,38 @@ class InvoicesService {
     return await this.db.query<InvoiceModel, any>("SELECT * FROM invoices", []);
   }
 
+  async getAllInvoicesWithUsers() {
+    return await this.db.query<InvoiceModel, any>(
+      "\
+    SELECT invoices.id, \
+      ammount, \
+      invoice_description, \
+      invoice_date, \
+      title, \
+      user1.id as user_id, \
+      user1.username as username \
+    FROM invoices \
+      JOIN users as user1 on invoices.user_id = user1.id \
+        ",
+      []
+    );
+  }
+
   async getUserInvoices(userId: number) {
     return await this.db.query<InvoiceDto, any>(
       "\
     SELECT invoices.id, \
       ammount, \
       invoice_description, \
-      title, \
       invoice_date, \
-      user1.id as user_id \
-      user1.username as username, \
+      title, \
+      user1.id as user_id, \
+      user1.username as username \
     FROM invoices \
-      JOIN users as user1 on invoices.user_id = user1.id",
-      []
+      JOIN users as user1 on invoices.user_id = user1.id \
+      WHERE user1.id = $1 \
+      ",
+      [userId]
     );
   }
 
