@@ -1,6 +1,7 @@
 import { Statistic, Typography } from "antd";
 import { useParams } from "react-router-dom";
 import { ErrorHandler, Flex, TransfersTable } from "../components";
+import { ExpensesChartForUser } from "../components/ExpensesChartForUser";
 import { InvoicesTable } from "../components/InvoicesTable";
 import { useHandleResourceState, useUsers } from "../hooks";
 
@@ -10,6 +11,10 @@ export const UserView = () => {
   const { error, isLoading, resource } = useUsers();
 
   useHandleResourceState({ error, isLoading, resource });
+
+  if (!id) {
+    return null;
+  }
 
   const currentUser = resource?.users.find(
     ({ id: userId }) => id && userId === Number(id)
@@ -30,6 +35,8 @@ export const UserView = () => {
           prefix="$"
         />
       </Flex>
+
+      <ExpensesChartForUser userId={Number(id)} />
 
       <InvoicesTable
         title="Your invoices"
