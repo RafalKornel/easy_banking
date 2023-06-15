@@ -1,5 +1,5 @@
 import { Application, Request, Response } from "express";
-import { ResponseHandler } from "../ResponseHandler";
+import { ResponseHandler } from "../../utils/response-handler";
 import { AddTransferDto, TransferWithUsersModel } from "./transfers.model";
 import { transfersService } from "./transfers.service";
 

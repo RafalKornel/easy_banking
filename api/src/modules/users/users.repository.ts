@@ -1,6 +1,6 @@
-import { db } from "../db";
-import { BaseRepository } from "../services";
-import { getNextId } from "../utils/getNextId";
+import { db } from "../../db";
+import { BaseRepository } from "../../services";
+import { getNextId } from "../../utils/getNextId";
 import { UserModel } from "./users.model";
 
 class UsersRepository extends BaseRepository {
@@ -41,7 +41,7 @@ class UsersRepository extends BaseRepository {
   }
 
   async getUsers() {
-    return await this.db.query<UserModel, any>("SELECT * FROM users", []);
+    return this.db.query<UserModel, any>("SELECT * FROM users", []);
   }
 
   async getUser(userId: number) {

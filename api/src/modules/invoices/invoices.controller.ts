@@ -1,5 +1,5 @@
 import { Application, Request, Response } from "express";
-import { ResponseHandler } from "../ResponseHandler";
+import { ResponseHandler } from "../../utils/response-handler";
 import { AddInvoiceDto, InvoiceModel } from "./invoices.model";
 import { invoicesService } from "./invoices.service";
 

@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool, QueryResultRow } from "pg";
 
 const credentials = {
   host: process.env.DB_HOST || "",
@@ -17,7 +17,10 @@ export class Db {
     this.pool = new Pool(credentials);
   }
 
-  query<TResult, TParams extends any[]>(text: string, params: TParams) {
+  query<TResult extends QueryResultRow, TParams extends any[]>(
+    text: string,
+    params: TParams
+  ) {
     return this.pool.query<TResult, TParams>(text, params);
   }
 }

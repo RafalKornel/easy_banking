@@ -1,7 +1,7 @@
 import { Request, Response, Application } from "express";
-import { ResponseHandler } from "../ResponseHandler";
 import { RegisterDto, UserModel } from "./users.model";
 import { usersService } from "./users.service";
+import { ResponseHandler } from "../../utils/response-handler";
 
 export const registerUsersRoutes = (app: Application) => {
   app.post(

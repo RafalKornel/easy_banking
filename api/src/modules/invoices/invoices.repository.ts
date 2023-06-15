@@ -1,6 +1,6 @@
-import { db } from "../db";
-import { BaseRepository } from "../services";
-import { getNextId } from "../utils/getNextId";
+import { db } from "../../db";
+import { BaseRepository } from "../../services";
+import { getNextId } from "../../utils/getNextId";
 import { InvoiceDto, InvoiceModel } from "./invoices.model";
 
 class InvoicesRepository extends BaseRepository {

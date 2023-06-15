@@ -1,9 +1,9 @@
 import { app } from "./app";
-import { registerInvoicesRoutes } from "./invoices";
-import { registerSeederRoutes } from "./seeder";
+import { registerInvoicesRoutes } from "./modules/invoices";
+import { registerSeederRoutes } from "./modules/seeder";
 
-import { registerTransfersRoutes } from "./transfers";
-import { registerUsersRoutes } from "./users";
+import { registerTransfersRoutes } from "./modules/transfers";
+import { registerUsersRoutes } from "./modules/users";
 
 registerUsersRoutes(app);
 registerTransfersRoutes(app);

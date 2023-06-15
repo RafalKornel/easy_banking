@@ -1,6 +1,6 @@
-import { db } from "../db";
-import { BaseRepository } from "../services";
-import { getNextId } from "../utils/getNextId";
+import { db } from "../../db";
+import { BaseRepository } from "../../services";
+import { getNextId } from "../../utils/getNextId";
 import { TransferModel, TransferWithUsersModel } from "./transfers.model";
 
 class TransfersRepository extends BaseRepository {

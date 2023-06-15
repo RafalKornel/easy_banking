@@ -1,4 +1,4 @@
-import { Password } from "../models";
+import { Password } from "../../models";
 
 export interface RegisterDto {
   username: string;
