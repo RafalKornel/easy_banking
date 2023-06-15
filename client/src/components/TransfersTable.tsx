@@ -15,6 +15,11 @@ const columns: ColumnsType<TransferDto> = [
     title: "Date",
     dataIndex: "transfer_date",
     render: (date) => new Date(date).toLocaleDateString(),
+    sorter: (a, b) => {
+      const firstDate = new Date(a.transfer_date);
+      const secondDate = new Date(b.transfer_date);
+      return firstDate > secondDate ? 1 : -1;
+    },
   },
 ];
 
