@@ -8,14 +8,6 @@ import { AddTransferDto } from "./transfers.model";
 class TransfersService {
   constructor(private readonly transfersRepository: TransfersRepository) {}
 
-  async create() {
-    return this.transfersRepository.create();
-  }
-
-  async drop() {
-    return this.transfersRepository.drop();
-  }
-
   async getAllTransfers() {
     return this.transfersRepository.getAllTransfers();
   }

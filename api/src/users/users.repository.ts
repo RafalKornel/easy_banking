@@ -3,7 +3,7 @@ import { BaseRepository } from "../services";
 import { getNextId } from "../utils/getNextId";
 import { UserModel } from "./users.model";
 
-class UserRepository extends BaseRepository {
+class UsersRepository extends BaseRepository {
   async create() {
     const CREATE_USERS_SQL = `
     CREATE TABLE users (
@@ -61,5 +61,6 @@ class UserRepository extends BaseRepository {
   }
 }
 
-export const userRepository = new UserRepository(db);
-export type { UserRepository };
+export const usersRepository = new UsersRepository(db);
+
+export type { UsersRepository as UsersRepository };

@@ -5,14 +5,6 @@ import { AddInvoiceDto } from "./invoices.model";
 class InvoicesService {
   constructor(private readonly invoicesRepository: InvoicesRepository) {}
 
-  async create() {
-    return this.invoicesRepository.create();
-  }
-
-  async drop() {
-    return this.invoicesRepository.drop();
-  }
-
   async getAllInvoices() {
     return this.invoicesRepository.getAllInvoices();
   }

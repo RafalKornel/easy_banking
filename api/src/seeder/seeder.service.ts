@@ -2,21 +2,23 @@ import { AddInvoiceDto } from "../invoices/invoices.model";
 import { invoicesService } from "../invoices/invoices.service";
 import { transfersService } from "../transfers/transfers.service";
 import { RegisterDto, usersService } from "../users";
-import { BaseRepository } from "../services/entity.service";
 import { faker } from "@faker-js/faker";
 import { AddTransferDto } from "../transfers/transfers.model";
+import { transfersRepository } from "../transfers/transfers.repository";
+import { invoicesRepository } from "../invoices/invoices.repository";
+import { usersRepository } from "../users/users.repository";
 
 export class SeederService {
   async dropAllTables() {
-    await transfersService.drop();
-    await invoicesService.drop();
-    await usersService.drop();
+    await transfersRepository.drop();
+    await invoicesRepository.drop();
+    await usersRepository.drop();
   }
 
   async createAllTables() {
-    await usersService.create();
-    await transfersService.create();
-    await invoicesService.create();
+    await usersRepository.create();
+    await transfersRepository.create();
+    await invoicesRepository.create();
   }
 
   async seedAll() {

@@ -1,18 +1,10 @@
-import { userRepository, UserRepository } from "./users.repository";
+import { usersRepository, UsersRepository } from "./users.repository";
 import { RegisterDto, RegisterModel } from "./users.model";
 
 const DEFAULT_BALANCE = 1000;
 
 class UsersService {
-  constructor(private readonly userRepository: UserRepository) {}
-
-  async create() {
-    return this.userRepository.create();
-  }
-
-  async drop() {
-    return this.userRepository.drop();
-  }
+  constructor(private readonly userRepository: UsersRepository) {}
 
   async registerUser(user: RegisterDto, hardId?: number) {
     const { password, repeatPassword, username, startingBalance } = user;
@@ -55,4 +47,4 @@ class UsersService {
   }
 }
 
-export const usersService = new UsersService(userRepository);
+export const usersService = new UsersService(usersRepository);
