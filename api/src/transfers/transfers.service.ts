@@ -1,63 +1,27 @@
-import { db } from "../db";
-import { BaseRepository } from "../services";
 import { usersService, UserModel } from "../users";
-import { getNextId } from "../utils/getNextId";
 import {
-  AddTransferDto,
-  TransferModel,
-  TransferWithUsersModel,
-} from "./transfers.model";
+  TransfersRepository,
+  transfersRepository,
+} from "./transfers.repository";
+import { AddTransferDto } from "./transfers.model";
 
-class TransfersService extends BaseRepository {
+class TransfersService {
+  constructor(private readonly transfersRepository: TransfersRepository) {}
+
   async create() {
-    const CREATE_TRANSFERS_SQL = `
-    CREATE TABLE transfers (
-      id INT PRIMARY KEY,
-      ammount INT NOT NULL,
-      title VARCHAR NOT NULL,
-      transfer_description VARCHAR,
-      transfer_date VARCHAR NOT NULL,
-      sender_id INT NOT NULL,
-      CONSTRAINT fk_sender FOREIGN KEY(sender_id) REFERENCES users(id),
-      recipient_id INT NOT NULL,
-      CONSTRAINT fk_recipient FOREIGN KEY(recipient_id) REFERENCES users(id)
-    )`;
-
-    return await this.db.query(CREATE_TRANSFERS_SQL, []);
+    return this.transfersRepository.create();
   }
 
   async drop() {
-    const DROP_TRANSFERS_SQL = "DROP TABLE IF EXISTS transfers CASCADE";
-
-    return await this.db.query(DROP_TRANSFERS_SQL, []);
+    return this.transfersRepository.drop();
   }
 
   async getAllTransfers() {
-    const GET_ALL_TRANSFERS_SQL = "SELECT * FROM transfers";
-
-    return await this.db.query<TransferModel, any>(GET_ALL_TRANSFERS_SQL, []);
+    return this.transfersRepository.getAllTransfers();
   }
 
   async getAllTransfersWithUsers() {
-    const GET_ALL_TRANSFERS_WITH_USERS_SQL = `
-    SELECT 
-      transfers.id,
-      ammount,
-      recipient_id,
-      sender_id,
-      title,
-      transfer_date,
-      transfer_description,
-      user1.username as recipient_username,
-      user2.username as sender_username
-    FROM transfers
-      JOIN users as user1 on transfers.recipient_id = user1.id
-      JOIN users as user2 on transfers.sender_id = user2.id;`;
-
-    return await this.db.query<TransferWithUsersModel[], any>(
-      GET_ALL_TRANSFERS_WITH_USERS_SQL,
-      []
-    );
+    return this.transfersRepository.getAllTransfersWithUsers();
   }
 
   canPerformTransfer(user: UserModel, ammount: number) {
@@ -86,23 +50,18 @@ class TransfersService extends BaseRepository {
 
     const transfers = await this.getAllTransfers();
 
-    const nextId = hardId || getNextId(transfers);
-
     const transferDate = date || new Date().toISOString();
 
-    return await this.db.query(
-      "INSERT INTO transfers VALUES ($1, $2, $3, $4, $5, $6, $7)",
-      [
-        nextId,
-        ammount,
-        title,
-        description,
-        transferDate,
-        sender_id,
-        recipient_id,
-      ]
+    return this.transfersRepository.addTransfer(
+      ammount,
+      title,
+      description,
+      transferDate,
+      sender_id,
+      recipient_id,
+      hardId
     );
   }
 }
 
-export const transfersService = new TransfersService(db);
+export const transfersService = new TransfersService(transfersRepository);
