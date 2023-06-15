@@ -2,7 +2,7 @@ import { AddInvoiceDto } from "../invoices/invoices.model";
 import { invoicesService } from "../invoices/invoices.service";
 import { transfersService } from "../transfers/transfers.service";
 import { RegisterDto, usersService } from "../users";
-import { EntityService } from "../services/entity.service";
+import { BaseRepository } from "../services/entity.service";
 import { faker } from "@faker-js/faker";
 import { AddTransferDto } from "../transfers/transfers.model";
 

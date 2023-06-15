@@ -1,10 +1,10 @@
 import { db } from "../db";
-import { EntityService } from "../services";
+import { BaseRepository } from "../services";
 import { UserModel, usersService } from "../users";
 import { getNextId } from "../utils/getNextId";
 import { AddInvoiceDto, InvoiceDto, InvoiceModel } from "./invoices.model";
 
-class InvoicesService extends EntityService {
+class InvoicesService extends BaseRepository {
   async create() {
     const CREATE_INVOICES_SQL = `
     CREATE TABLE invoices (

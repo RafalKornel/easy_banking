@@ -1,7 +1,7 @@
 import { QueryResult } from "pg";
 import { Db } from "./db.service";
 
-export abstract class EntityService {
+export abstract class BaseRepository {
   protected readonly db: Db;
 
   abstract create(): Promise<QueryResult<any>>;

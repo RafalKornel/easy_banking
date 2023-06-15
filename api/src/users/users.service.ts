@@ -1,27 +1,17 @@
-import { db } from "../db";
-import { EntityService } from "../services";
-import { getNextId } from "../utils/getNextId";
-import { RegisterDto, RegisterModel, UserModel } from "./users.model";
+import { userRepository, UserRepository } from "./users.repository";
+import { RegisterDto, RegisterModel } from "./users.model";
 
 const DEFAULT_BALANCE = 1000;
 
-class UsersService extends EntityService {
-  async create() {
-    const CREATE_USERS_SQL = `
-    CREATE TABLE users (
-      id INT PRIMARY KEY,
-      username VARCHAR NOT NULL,
-      password VARCHAR NOT NULL,
-      balance INT NOT NULL
-    )`;
+class UsersService {
+  constructor(private readonly userRepository: UserRepository) {}
 
-    return await this.db.query(CREATE_USERS_SQL, []);
+  async create() {
+    return this.userRepository.create();
   }
 
   async drop() {
-    const DROP_USERS_SQL = "DROP TABLE IF EXISTS users CASCADE";
-
-    return await this.db.query(DROP_USERS_SQL, []);
+    return this.userRepository.drop();
   }
 
   async registerUser(user: RegisterDto, hardId?: number) {
@@ -34,7 +24,7 @@ class UsersService extends EntityService {
       startingBalance,
     });
 
-    const existingUsers = await this.getUsers();
+    const existingUsers = await this.userRepository.getUsers();
 
     const isUserRegistered = existingUsers.rows.find(
       (user) => user.username === registerModel.username
@@ -44,35 +34,25 @@ class UsersService extends EntityService {
       throw new Error("User already registered");
     }
 
-    const newUserId = hardId || getNextId(existingUsers);
-
-    return await this.db.query("INSERT INTO users VALUES ($1, $2, $3, $4)", [
-      newUserId,
+    return await this.userRepository.registerUser(
       registerModel.username,
       registerModel.password,
       registerModel.startingBalance || DEFAULT_BALANCE,
-    ]);
+      hardId
+    );
   }
 
   async getUsers() {
-    return await this.db.query<UserModel, any>("SELECT * FROM users", []);
+    return this.userRepository.getUsers();
   }
 
   async getUser(userId: number) {
-    return await this.db.query<UserModel, any>(
-      "SELECT * \
-        FROM users \
-        WHERE users.id = $1 ",
-      [userId]
-    );
+    return this.userRepository.getUser(userId);
   }
 
   async updateBalance(userId: number, newBalance: number) {
-    await this.db.query<UserModel, any>(
-      "UPDATE users SET balance = $1 WHERE id = $2;",
-      [newBalance, userId]
-    );
+    return this.userRepository.updateBalance(userId, newBalance);
   }
 }
 
-export const usersService = new UsersService(db);
+export const usersService = new UsersService(userRepository);

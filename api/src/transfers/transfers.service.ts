@@ -1,5 +1,5 @@
 import { db } from "../db";
-import { EntityService } from "../services";
+import { BaseRepository } from "../services";
 import { usersService, UserModel } from "../users";
 import { getNextId } from "../utils/getNextId";
 import {
@@ -8,7 +8,7 @@ import {
   TransferWithUsersModel,
 } from "./transfers.model";
 
-class TransfersService extends EntityService {
+class TransfersService extends BaseRepository {
   async create() {
     const CREATE_TRANSFERS_SQL = `
     CREATE TABLE transfers (
